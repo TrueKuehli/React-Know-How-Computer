@@ -9,6 +9,9 @@ import TooltipIconButton from "./TooltipIconButton";
 import ProgramUpload from "./ProgramUpload";
 import {CommandStruct} from "./Command";
 import "./SaveProgram.scss";
+import {showNotification} from "@mantine/notifications";
+import ErrorIcon from "@mui/icons-material/Error";
+import DoneIcon from '@mui/icons-material/Done';
 
 type Props = {
     buttonSize?: 'sm' | 'md' | 'lg' | 'xl';
@@ -16,7 +19,7 @@ type Props = {
     // Bound function already containing: // commands: CommandStruct[], registers: number[]
     serializationFunction: (name: string, saveRegisters: boolean) => {name: string, code: string};
 
-    deserializationFunction: (fileContent: string) => [CommandStruct[], number[]];
+    deserializationFunction: (fileContent: string) => ([CommandStruct[], number[]] | string);
     setCommands: (commands: CommandStruct[]) => void;
     setRegisters: (registers: number[]) => void;
     setPC: (pc: number) => void;
@@ -71,13 +74,31 @@ function SaveProgram(props: Props) {
     }, [savePrograms]);
 
     const selectProgram = useCallback((code: string) => {
-        const [commands, registers] = props.deserializationFunction(code);
+        const result = props.deserializationFunction(code);
+        if (typeof(result) === "string") {
+            return showNotification({
+                title: "Invalid file",
+                message: `File content does not appear to be a valid Know-How Computer program:\n${result}`,
+                autoClose: 5000,
+                color: "red",
+                icon: <ErrorIcon/>,
+            });
+        }
+        const [commands, registers] = result;
 
         props.setCommands(commands);
         props.setRegisters(registers);
         props.setPC(0);
 
         setLoadOpened(false);
+
+        return showNotification({
+            title: "Loading Successful",
+            message: "Successfully loaded program",
+            autoClose: 2000,
+            color: "green",
+            icon: <DoneIcon/>,
+        });
     }, [props, setLoadOpened]);
 
     return (
@@ -106,6 +127,14 @@ function SaveProgram(props: Props) {
                                 props.serializationFunction(name, storeRegisters)
                             ]);
                             setSaveOpened(false);
+
+                            return showNotification({
+                                title: "Save Successful",
+                                message: "Successfully saved program to browser",
+                                autoClose: 2000,
+                                color: "green",
+                                icon: <DoneIcon/>,
+                            });
                         }}>
                             Save to Browser
                         </Button>

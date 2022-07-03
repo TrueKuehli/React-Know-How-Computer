@@ -397,7 +397,7 @@ function KHComputer() {
                 <SaveProgram buttonSize={smallScreen ? "lg" : "xl"}
                              serializationFunction={serializeProgram.bind(null, commands, registers)}
                              deserializationFunction={deserializeProgram}
-                             setCommands={setCommands}
+                             setCommands={(commands) => {setCommands(commands); setNextID(commands.length);}}
                              setRegisters={setRegisters}
                              setPC={setPC}/>
             </div>
