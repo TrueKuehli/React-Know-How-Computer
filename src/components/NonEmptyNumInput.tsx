@@ -36,6 +36,9 @@ function NonEmptyNumInput(props: Props) {
                     props.update(val);
                 }
             }}
+            onFocus={(e) => {
+                e.currentTarget.select();
+            }}
             max={props.max}
             min={props.min}
             step={1}
