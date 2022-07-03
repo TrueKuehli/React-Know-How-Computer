@@ -91,7 +91,7 @@ function Command(props: Props) {
                                   min={0}
                                   max={props.maxVal - 1}
                                   width={`${6 + props.valDigits}ch`}
-                                  update={(register: number) => {console.log(register); props.updateCommand(props.line, props.command.type, register) }}
+                                  update={(register: number) => props.updateCommand(props.line, props.command.type, register)}
                                   disabled={ARGUMENTLESS_COMMANDS.includes(props.command.type)}/>
             </Tooltip>
 

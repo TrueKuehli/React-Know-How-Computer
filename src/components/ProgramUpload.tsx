@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useCallback} from "react";
 import {useMantineTheme, Text} from "@mantine/core";
 import {FullScreenDropzone, DropzoneStatus} from '@mantine/dropzone';
 import UploadIcon from "@mui/icons-material/Upload";
@@ -50,10 +50,25 @@ function dropzoneChildren(status: DropzoneStatus) {
 function ProgramUpload(props: Props) {
     const theme = useMantineTheme();
 
+    const handleFiles = useCallback((files: File[] | FileList | null) => {
+        if (files) {
+            if (files[0].type !== "application/json") {
+                return alert("Only .json files are accepted.");
+            }
+
+            let reader = new FileReader();
+            reader.onload = (event) => {
+                props.loadFile(event.target?.result as string)
+            }
+
+            reader.readAsText(files[0]);
+        }
+    }, [props]);
+
     return (
         <>
             <FullScreenDropzone className="ProgramDropzone" accept={["application/json"]}
-                                onDrop={(files) => {console.log(files)}}>
+                                onDrop={handleFiles}>
                 {(status) => dropzoneChildren(status)}
             </FullScreenDropzone>
             <div className={"ProgramLoadButton Upload"}
@@ -69,18 +84,7 @@ function ProgramUpload(props: Props) {
 
                      input.addEventListener<"change">("change", (event) => {
                          let files = (event.target as HTMLInputElement).files;
-                         if (files) {
-                             if (files[0].type !== "application/json") {
-                                 return alert("Only .json files are accepted.");
-                             }
-
-                             let reader = new FileReader();
-                             reader.onload = (event) => {
-                                 props.loadFile(event.target?.result as string)
-                             }
-
-                             reader.readAsText(files[0]);
-                         }
+                         handleFiles(files);
                     });
                     input.click();
                  }}
