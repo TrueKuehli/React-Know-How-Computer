@@ -67,6 +67,10 @@
                     margin-left: 0.5rem;
                 }
             }
+
+            ::-webkit-scrollbar {
+                height: 0.4rem;
+            }
         }
     }
 
