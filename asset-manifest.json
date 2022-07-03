@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/React-Know-How-Computer/static/css/main.29b343af.css",
-    "main.js": "/React-Know-How-Computer/static/js/main.7b669d93.js",
+    "main.js": "/React-Know-How-Computer/static/js/main.68757a7c.js",
     "index.html": "/React-Know-How-Computer/index.html",
     "main.29b343af.css.map": "/React-Know-How-Computer/static/css/main.29b343af.css.map",
-    "main.7b669d93.js.map": "/React-Know-How-Computer/static/js/main.7b669d93.js.map"
+    "main.68757a7c.js.map": "/React-Know-How-Computer/static/js/main.68757a7c.js.map"
   },
   "entrypoints": [
     "static/css/main.29b343af.css",
-    "static/js/main.7b669d93.js"
+    "static/js/main.68757a7c.js"
   ]
 }
