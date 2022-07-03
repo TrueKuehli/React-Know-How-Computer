@@ -59,6 +59,9 @@ function ProgramUpload(props: Props) {
             <div className={"ProgramLoadButton Upload"}
                  style={{["--background-color" as any]: theme.colors[theme.primaryColor][0],
                          ["--background-color-hover" as any]: theme.colors[theme.primaryColor][2]}}
+                 aria-label={"Upload program"}
+                 tabIndex={0} // Making the div focusable so programs may be uploaded using only the keyboard
+                 role={"button"}
                  onClick={() => {
                      let input = document.createElement("input");
                      input.type = "file";

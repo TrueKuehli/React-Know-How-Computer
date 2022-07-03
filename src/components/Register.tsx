@@ -26,6 +26,7 @@ function Register(props: Props) {
             </div>
             <Divider className="Divider" orientation="vertical"/>
             <NonEmptyNumInput className="RegisterValue"
+                              ariaLabel={"Register value"}
                               current={props.value}
                               width={`${6.5 + props.maxDigits}ch`}
                               onClick={(e: React.MouseEvent<HTMLInputElement>) => {e.preventDefault(); e.stopPropagation()}}
@@ -34,7 +35,8 @@ function Register(props: Props) {
             <TooltipIconButton className={"RemoveButton"}
                                color={"pink"}
                                size={"lg"}
-                               hoverText={"Delete Register"}
+                               hoverText={"Delete register"}
+                               ariaLabel={"Delete register"}
                                position={"right"}
                                onClick={(e: React.MouseEvent) => {
                                    e.preventDefault(); e.stopPropagation()

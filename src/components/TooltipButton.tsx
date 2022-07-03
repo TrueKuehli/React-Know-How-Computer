@@ -6,6 +6,7 @@ import './TooltipButton.scss';
 type Props = {
     command: string;
     hover_text: string;
+    ariaLabel: string;
     onClick?: () => void;
 }
 
@@ -16,7 +17,8 @@ function TooltipButton(props: Props) {
             position="bottom"
             withArrow
         >
-            <Button color="primary" className="CommandButton" size="xl" compact onClick={props.onClick}>
+            <Button color="primary" className="CommandButton" size="xl" compact onClick={props.onClick}
+                    aria-label={props.ariaLabel}>
                 {props.command}
             </Button>
         </Tooltip>

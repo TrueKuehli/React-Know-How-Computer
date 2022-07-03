@@ -1,6 +1,6 @@
 import React, {useCallback, useRef, useState} from 'react';
 import {flushSync} from "react-dom";
-import {ActionIcon, Divider, Text} from '@mantine/core';
+import {ActionIcon, Divider, MantineProvider, Text, Tooltip} from '@mantine/core';
 import {ReactSortable} from "react-sortablejs";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -235,18 +235,32 @@ function KHComputer() {
     return (
         <div className="KHComputer">
             <div className="CommandPalette">
-                <TooltipButton command={"NOP"} hover_text={"Does nothing and increments the PC by 1."}
-                               onClick={setCurrentCommandType.bind(undefined, CommandType.NOP)}/>
-                <TooltipButton command={"+"} hover_text={"Increments the register XX by 1 and increments the PC by 1."}
-                               onClick={setCurrentCommandType.bind(undefined, CommandType.INCREMENT)}/>
-                <TooltipButton command={"-"} hover_text={"Decrements the register XX by 1and increments the PC by 1."}
-                               onClick={setCurrentCommandType.bind(undefined, CommandType.DECREMENT)}/>
-                <TooltipButton command={"j"} hover_text={"Sets the PC to XX"}
-                               onClick={setCurrentCommandType.bind(undefined, CommandType.JUMP)}/>
-                <TooltipButton command={"0"} hover_text={"If register XX is 0, increments PC by 2, otherwise increments PC by 1."}
-                               onClick={setCurrentCommandType.bind(undefined, CommandType.IF_ZERO)}/>
-                <TooltipButton command={"Stop"} hover_text={"Stops execution."}
-                               onClick={setCurrentCommandType.bind(undefined, CommandType.STOP)}/>
+                <MantineProvider
+                    theme={{
+                        colorScheme: 'light',
+                        primaryColor: 'indigo',
+                        primaryShade: 9,
+                    }}
+                >
+                    <TooltipButton command={"NOP"} hover_text={"Does nothing and increments the PC by 1."}
+                                   ariaLabel={"Insert NOP command"}
+                                   onClick={setCurrentCommandType.bind(undefined, CommandType.NOP)}/>
+                    <TooltipButton command={"+"} hover_text={"Increments the register XX by 1 and increments the PC by 1."}
+                                   ariaLabel={"Insert Increment command"}
+                                   onClick={setCurrentCommandType.bind(undefined, CommandType.INCREMENT)}/>
+                    <TooltipButton command={"-"} hover_text={"Decrements the register XX by 1and increments the PC by 1."}
+                                   ariaLabel={"Insert Decrement command"}
+                                   onClick={setCurrentCommandType.bind(undefined, CommandType.DECREMENT)}/>
+                    <TooltipButton command={"j"} hover_text={"Sets the PC to XX"}
+                                   ariaLabel={"Insert Jump command"}
+                                   onClick={setCurrentCommandType.bind(undefined, CommandType.JUMP)}/>
+                    <TooltipButton command={"0"} hover_text={"If register XX is 0, increments PC by 2, otherwise increments PC by 1."}
+                                   ariaLabel={"Insert If Zero command"}
+                                   onClick={setCurrentCommandType.bind(undefined, CommandType.IF_ZERO)}/>
+                    <TooltipButton command={"Stop"} hover_text={"Stops execution."}
+                                   ariaLabel={"Insert Stop command"}
+                                   onClick={setCurrentCommandType.bind(undefined, CommandType.STOP)}/>
+                </MantineProvider>
             </div>
             <div className={"Computer"}>
                 <div className={"Gap"}></div>
@@ -277,7 +291,8 @@ function KHComputer() {
                         }
                     </ReactSortable>
                     <div className="ItemAdd" ref={addCommandRef} onClick={addCommand}>
-                        <ActionIcon size={"xl"} className={"CommandAddIcon"} variant={"transparent"}>
+                        <ActionIcon size={"xl"} className={"CommandAddIcon"} variant={"transparent"}
+                                    aria-label={"Add new command"}>
                             <AddCircleIcon fontSize="large" />
                         </ActionIcon>
                     </div>
@@ -302,7 +317,8 @@ function KHComputer() {
                         })
                     }
                     <div className="ItemAdd" ref={addRegisterRef} onClick={addRegister}>
-                        <ActionIcon size={"xl"} className={"CommandAddIcon"} variant={"transparent"}>
+                        <ActionIcon size={"xl"} className={"CommandAddIcon"} variant={"transparent"}
+                                    aria-label={"Add new register"}>
                             <AddCircleIcon fontSize="large" />
                         </ActionIcon>
                     </div>
@@ -312,17 +328,22 @@ function KHComputer() {
             </div>
             <div className="ActionsPalette">
                 <Text size="xl" className="ProgramCounterText" color="white" weight="bold">PC: </Text>
-                <NonEmptyNumInput className="ProgramCounter"
-                                  current={pc}
-                                  min={0}
-                                  max={Math.max(commands.length - 1, 0)}
-                                  width={`${6 + digits10(commands.length)}ch`}
-                                  update={(pc: number) => setPC(pc)}/>
+                <Tooltip label={"Program Counter"} position={"top"} withArrow>
+                    <NonEmptyNumInput className="ProgramCounter"
+                                      ariaLabel={"Program Counter"}
+                                      current={pc}
+                                      min={0}
+                                      max={Math.max(commands.length - 1, 0)}
+                                      width={`${6 + digits10(commands.length)}ch`}
+                                      update={(pc: number) => setPC(pc)}/>
+                </Tooltip>
                 <Divider orientation="vertical" />
                 <TooltipIconButton className={"ActionButton"}
                                    color={"primary"}
-                                   hoverText={running ? "Pauses program execution at current PC."
-                                                       : "Starts program execution starting at the current PC."}
+                                   hoverText={running ? "Pause program execution at current PC"
+                                                      : "Start program execution starting at the current PC"}
+                                   ariaLabel={running ? "Pause program execution at current PC"
+                                                      : "Start program execution starting at the current PC"}
                                    onClick={() => {
                                        setRunning(!running)
                                        lastAnimationFrame.current = performance.now();
@@ -332,13 +353,15 @@ function KHComputer() {
                 </TooltipIconButton>
                 <TooltipIconButton className={"ActionButton"}
                                    color={"primary"}
-                                   hoverText={"Steps forward one command."}
+                                   hoverText={"Step forward one command"}
+                                   ariaLabel={"Step forward one command"}
                                    onClick={() => executeCurrentCell(pc, registers)}>
                     <ArrowForwardIcon fontSize="large" />
                 </TooltipIconButton>
                 <TooltipIconButton className={"ActionButton"}
                                    color={"primary"}
-                                   hoverText={"Resets PC to 0."}
+                                   hoverText={"Reset PC to 0"}
+                                   ariaLabel={"Reset PC to 0"}
                                    onClick={() => setPC(0)}>
                     <RotateLeft fontSize="large" />
                 </TooltipIconButton>

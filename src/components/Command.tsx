@@ -51,13 +51,14 @@ function Command(props: Props) {
         <div className="Command" onClick={() => props.onClick(props.line)}
              style={{...(props.selected ? {backgroundColor: theme.colors[theme.primaryColor][2]} : {}),
                      ["--line_number_min_width" as any]: `${props.lineDigits + 2.5}ch`}}>
-            <DragHandleIcon className={"DragHandle"} fontSize={"medium"}/> {/*TODO: Font size small on small screens*/}
+            <DragHandleIcon className={"DragHandle"} fontSize={"medium"}/>
             <div className="LineNumber">
                 {props.current ? <ArrowForwardIcon fontSize={"medium"} className={"LineArrow"}/> : props.line}
             </div>
             <Divider className="Divider" orientation="vertical"/>
             <Tooltip label={"Command"} position="top" withArrow>
                 <TextInput className="CommandInput"
+                           aria-label={"Command"}
                            value={props.command.type}
                            ref={ref}
                            onInput={(evt) => {
@@ -85,6 +86,7 @@ function Command(props: Props) {
             </Tooltip>
             <Tooltip label={"Target"} position="top" withArrow>
                 <NonEmptyNumInput className="RegisterSelect"
+                                  ariaLabel={"Register or command reference"}
                                   current={props.command.reference || 0}
                                   min={0}
                                   max={props.maxVal - 1}
@@ -94,9 +96,10 @@ function Command(props: Props) {
             </Tooltip>
 
             <TooltipIconButton className={"RemoveButton"}
+                               ariaLabel={"Delete command"}
+                               hoverText={"Delete command"}
                                color={"pink"}
                                size={"lg"}
-                               hoverText={"Delete Command"}
                                position={"right"}
                                onClick={() => props.removeCommand(props.command.id)}>
                 <ClearIcon fontSize={"medium"}/>

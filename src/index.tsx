@@ -15,6 +15,7 @@ root.render(
           theme={{
               colorScheme: 'light',
               primaryColor: 'indigo',
+              primaryShade: 5,
           }}
       >
           <KHComputer />

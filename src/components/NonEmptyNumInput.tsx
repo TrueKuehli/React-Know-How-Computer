@@ -4,6 +4,7 @@ import {NumberInput} from '@mantine/core';
 
 type Props = {
     className?: string;
+    ariaLabel: string;
     current: number;
     min?: number;
     max?: number;
@@ -18,6 +19,7 @@ function NonEmptyNumInput(props: Props) {
     return (
         <NumberInput
             className={props.className}
+            aria-label={props.ariaLabel}
             value={props.current}
             onClick={props.onClick}
             onChange={(val) => {

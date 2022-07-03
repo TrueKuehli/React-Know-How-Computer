@@ -22,8 +22,9 @@ function SpeedSelector(props: Props) {
             <Popover
                 opened={opened}
                 onClose={() => setOpened(false)}
-                target={<TooltipIconButton hoverText={"Commands per Second"} className={props.buttonClass} color={"primary"}
-                                           onClick={() => setOpened((open) => !open)}>
+                target={<TooltipIconButton hoverText={"Change execution speed"} className={props.buttonClass} color={"primary"}
+                                           onClick={() => setOpened((open) => !open)}
+                                           ariaLabel={"Change execution speed"}>
                     <SpeedIcon fontSize={"large"}/>
                 </TooltipIconButton>}
                 width={300}
@@ -34,6 +35,7 @@ function SpeedSelector(props: Props) {
                     min={1}
                     max={60}
                     step={1}
+                    aria-label={"Execution speed in commands per second"}
                     value={props.speed}
                     marks={[
                         { value: 1, label: '1' },
@@ -46,13 +48,15 @@ function SpeedSelector(props: Props) {
             </Popover>
         :
             <>
-                <SpeedIcon fontSize={"large"} className={props.buttonClass} style={{color: theme.colors[theme.primaryColor][8], marginLeft: "0.5rem"}}/>
+                <SpeedIcon fontSize={"large"} className={props.buttonClass} style={{color: theme.colors[theme.primaryColor][theme.primaryShade as number], marginLeft: "0.5rem"}}/>
 
-                <Tooltip label={`Commands per Second: ${props.speed}`} position="top" withArrow>
+                <Tooltip label={`Commands per second: ${props.speed}`} position="top" withArrow>
                     <Slider
                         min={1}
                         max={60}
                         step={1}
+                        aria-label={"Execution speed in commands per second"}
+                        thumbLabel={"Execution speed slider thumb"}
                         value={props.speed}
                         marks={[
                             { value: 1, label: '1' },

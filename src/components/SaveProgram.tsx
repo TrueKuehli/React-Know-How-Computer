@@ -41,7 +41,8 @@ const ProgramButton = memo((props: ProgramProps) => {
             <TooltipIconButton className={"RemoveButton"}
                                color={"pink"}
                                size={"lg"}
-                               hoverText={"Delete Saved Program"}
+                               hoverText={"Delete saved program"}
+                               ariaLabel={"Delete saved program"}
                                position={"top"}
                                onClick={() => props.removeProgram(props.index)}>
                 <ClearIcon fontSize={"medium"}/>
@@ -135,13 +136,15 @@ function SaveProgram(props: Props) {
 
             <TooltipIconButton className={"ActionButton"}
                                color={"primary"}
-                               hoverText={"Save Current Program."}
+                               hoverText={"Save current program"}
+                               ariaLabel={"Save current program"}
                                onClick={() => setSaveOpened(true)}>
                 <SaveIcon fontSize="large" />
             </TooltipIconButton>
             <TooltipIconButton className={"ActionButton"}
                                color={"primary"}
-                               hoverText={"Load Program."}
+                               hoverText={"Load program"}
+                               ariaLabel={"Load program"}
                                onClick={() => setLoadOpened(true)}>
                 <FileOpenIcon fontSize="large" />
             </TooltipIconButton>
