@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import {MantineProvider} from "@mantine/core";
 import {NotificationsProvider} from '@mantine/notifications';
 
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import KHComputer from './components/KHComputer';
 import './index.scss';
 
@@ -26,3 +27,4 @@ root.render(
     </React.StrictMode>
 );
 
+serviceWorkerRegistration.register();
