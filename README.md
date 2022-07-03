@@ -3,6 +3,8 @@
 Web-based simulation of the [Know-how Computer](https://en.wikipedia.org/wiki/WDR_paper_computer), also known as the 
 WDR paper computer.
 
+![Screenshot of the App](screenshot.png "Screenshot of the Know-How Computer")
+
 ## Features
 
 - Commands and registers can be easily modified, added and removed
