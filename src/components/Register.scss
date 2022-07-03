@@ -1,0 +1,39 @@
+.Register {
+    --line_number_min_width: 3.5ch;
+
+    display: grid;
+    grid-template-columns: var(--line_number_min_width) 1rem auto auto auto auto;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background-color: #fff;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    height: 2.5rem;
+
+    .Index {
+        display: flex;
+        padding-right: 0.5ch;
+        justify-content: end;
+        align-items: center;
+        justify-self: end;
+        color: #444;
+    }
+
+    .Divider {
+        margin: 0 auto;
+    }
+
+    //.RegisterValue {
+    //    text-align: center;
+    //    margin-left: 0.5ch;
+    //    margin-right: 0.5rem;
+    //    min-width: 4rem;
+    //    max-width: 10rem;
+    //}
+
+    .RemoveButton {
+        margin-left: 0.5rem;
+    }
+}

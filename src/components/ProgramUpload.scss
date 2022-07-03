@@ -1,0 +1,41 @@
+.ProgramLoadButton.Upload {
+  grid-template-columns: auto 1fr;
+}
+
+.DropzoneContent {
+  display: flex;
+  height: 100%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  .DropzoneIcon {
+    font-size: 12rem;
+
+    @media (max-width: 1250px) {
+      font-size: 8rem;
+    }
+    @media (max-width: 750px) {
+      font-size: 6rem;
+    }
+    @media (max-width: 500px) {
+      font-size: 4rem;
+    }
+  }
+
+  .DropzoneText {
+    margin-left: 0.5rem;
+    font-size: 500%;
+
+    @media (max-width: 1250px) {
+      font-size: 300%;
+    }
+    @media (max-width: 750px) {
+      font-size: 200%;
+    }
+    @media (max-width: 500px) {
+      font-size: 150%;
+    }
+
+  }
+}

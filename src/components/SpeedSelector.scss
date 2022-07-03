@@ -1,0 +1,10 @@
+.SpeedSlider {
+  padding-bottom: 0.5rem;
+
+  &.Large {
+    min-width: 15rem;
+    width: 30vw;
+    max-width: 30rem;
+    margin-right: 0.5rem;
+  }
+}
