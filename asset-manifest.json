@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/React-Know-How-Computer/static/css/main.fc4e5ff5.css",
-    "main.js": "/React-Know-How-Computer/static/js/main.8fccadf1.js",
+    "main.css": "/React-Know-How-Computer/static/css/main.aacb98d3.css",
+    "main.js": "/React-Know-How-Computer/static/js/main.27ee87d0.js",
     "service-worker.js": "/React-Know-How-Computer/service-worker.js",
     "index.html": "/React-Know-How-Computer/index.html",
-    "main.fc4e5ff5.css.map": "/React-Know-How-Computer/static/css/main.fc4e5ff5.css.map",
-    "main.8fccadf1.js.map": "/React-Know-How-Computer/static/js/main.8fccadf1.js.map"
+    "main.aacb98d3.css.map": "/React-Know-How-Computer/static/css/main.aacb98d3.css.map",
+    "main.27ee87d0.js.map": "/React-Know-How-Computer/static/js/main.27ee87d0.js.map"
   },
   "entrypoints": [
-    "static/css/main.fc4e5ff5.css",
-    "static/js/main.8fccadf1.js"
+    "static/css/main.aacb98d3.css",
+    "static/js/main.27ee87d0.js"
   ]
 }
