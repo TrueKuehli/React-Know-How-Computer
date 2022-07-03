@@ -149,50 +149,50 @@ function KHComputer() {
 
 
     // Program execution
-    const executeCurrentCell: (pc: number, registers: number[]) => [number, number[], boolean]
-        = useCallback((pc: number, registers: number[]) =>
+    const executeCurrentCell: (executePC: number, registerContent: number[]) => [number, number[], boolean]
+        = useCallback((executePC: number, registerContent: number[]) =>
     {
-        let running = true;
+        let isRunning = true;
 
-        const currentCommand = commands[pc];
+        const currentCommand = commands[executePC];
         if (currentCommand === undefined) {
-            pc = 0;
-            return [pc, registers, false];
+            executePC = 0;
+            return [executePC, registerContent, false];
         }
 
         switch (currentCommand.type) {
             case CommandType.NOP:
-                pc++;
+                executePC++;
                 break;
             case CommandType.INCREMENT:
-                registers[currentCommand.reference]++;
-                pc++;
+                registerContent[currentCommand.reference]++;
+                executePC++;
                 break;
             case CommandType.DECREMENT:
-                registers[currentCommand.reference]--;
-                pc++;
+                registerContent[currentCommand.reference]--;
+                executePC++;
                 break;
             case CommandType.JUMP:
-                pc = currentCommand.reference;
+                executePC = currentCommand.reference;
                 break;
             case CommandType.IF_ZERO:
-                if (registers[currentCommand.reference] === 0) {
-                    pc += 2;
+                if (registerContent[currentCommand.reference] === 0) {
+                    executePC += 2;
                 } else {
-                    pc++;
+                    executePC++;
                 }
                 break;
             case CommandType.STOP:
-                running = false;
+                isRunning = false;
                 break;
         }
 
-        if (pc > commands.length - 1) {
-            pc = 0;
-            running = false;
+        if (executePC > commands.length - 1) {
+            executePC = 0;
+            isRunning = false;
         }
 
-        return [pc, registers, running];
+        return [executePC, registerContent, isRunning];
     }, [commands]);
 
     const lastAnimationFrame = useRef<number>(performance.now());
@@ -205,19 +205,19 @@ function KHComputer() {
 
                 let localPC = pc;
                 let localRegisters = [...registers];
-                let running = true;
+                let localRunning = true;
 
                 for (let i = 0; i < commandsToRun; i++) {
-                    [localPC, localRegisters, running] = executeCurrentCell(localPC, localRegisters);
+                    [localPC, localRegisters, localRunning] = executeCurrentCell(localPC, localRegisters);
 
-                    if (!running || pc >= commands.length) {
-                        running = false;
+                    if (!localRunning || pc >= commands.length) {
+                        localRunning = false;
                         break;
                     }
                 }
 
                 flushSync(() => {
-                    setRunning(running);
+                    setRunning(running && localRunning);
                     setPC(localPC);
                     setRegisters(localRegisters);
                 });
@@ -226,6 +226,7 @@ function KHComputer() {
 
         animationRequestRef.current = requestAnimationFrame(animate);
     }, [commands.length, registers, pc, running, speed, executeCurrentCell]);
+
     React.useEffect(() => {
         animationRequestRef.current = requestAnimationFrame(animate);
         return () => cancelAnimationFrame(animationRequestRef.current || 0);
@@ -346,6 +347,7 @@ function KHComputer() {
                                                       : "Start program execution starting at the current PC"}
                                    onClick={() => {
                                        setRunning(!running)
+
                                        lastAnimationFrame.current = performance.now();
                                    }}>
                     {running ? <PauseIcon fontSize="large"/>
@@ -355,7 +357,14 @@ function KHComputer() {
                                    color={"primary"}
                                    hoverText={"Step forward one command"}
                                    ariaLabel={"Step forward one command"}
-                                   onClick={() => executeCurrentCell(pc, registers)}>
+                                   onClick={() => {
+                                       const [endPC, registerContent, isRunning] = executeCurrentCell(pc, registers);
+                                       flushSync(() => {
+                                           setRunning(running && isRunning);
+                                           setPC(endPC);
+                                           setRegisters(registerContent);
+                                       });
+                                   }}>
                     <ArrowForwardIcon fontSize="large" />
                 </TooltipIconButton>
                 <TooltipIconButton className={"ActionButton"}
