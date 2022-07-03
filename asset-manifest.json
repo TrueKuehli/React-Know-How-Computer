@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/React-Know-How-Computer/static/css/main.e5385549.css",
+    "main.js": "/React-Know-How-Computer/static/js/main.575473cc.js",
+    "index.html": "/React-Know-How-Computer/index.html",
+    "main.e5385549.css.map": "/React-Know-How-Computer/static/css/main.e5385549.css.map",
+    "main.575473cc.js.map": "/React-Know-How-Computer/static/js/main.575473cc.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e5385549.css",
+    "static/js/main.575473cc.js"
+  ]
+}
