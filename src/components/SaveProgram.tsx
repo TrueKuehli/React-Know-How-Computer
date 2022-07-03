@@ -11,6 +11,8 @@ import {CommandStruct} from "./Command";
 import "./SaveProgram.scss";
 
 type Props = {
+    buttonSize?: 'sm' | 'md' | 'lg' | 'xl';
+
     // Bound function already containing: // commands: CommandStruct[], registers: number[]
     serializationFunction: (name: string, saveRegisters: boolean) => {name: string, code: string};
 
@@ -136,6 +138,7 @@ function SaveProgram(props: Props) {
 
             <TooltipIconButton className={"ActionButton"}
                                color={"primary"}
+                               size={props.buttonSize}
                                hoverText={"Save current program"}
                                ariaLabel={"Save current program"}
                                onClick={() => setSaveOpened(true)}>
@@ -143,6 +146,7 @@ function SaveProgram(props: Props) {
             </TooltipIconButton>
             <TooltipIconButton className={"ActionButton"}
                                color={"primary"}
+                               size={props.buttonSize}
                                hoverText={"Load program"}
                                ariaLabel={"Load program"}
                                onClick={() => setLoadOpened(true)}>

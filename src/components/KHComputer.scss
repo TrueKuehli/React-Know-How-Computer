@@ -43,6 +43,31 @@
             background-color: #4c6ef5;
             border-radius: 4px;
         }
+
+        @media (max-width: 500px) {
+            grid-template-columns: auto;
+            justify-content: center;
+
+            .Gap {
+                display: none;
+            }
+
+            .CodeField {
+                margin-right: 0;
+            }
+
+            .RegisterField {
+                margin-top: 1rem;
+                display: flex;
+                align-items: center;
+                width: 100%;
+                overflow-x: auto;
+
+                .Register, .ItemAdd {
+                    margin-left: 0.5rem;
+                }
+            }
+        }
     }
 
     .CommandPalette, .ActionsPalette {
@@ -64,6 +89,15 @@
         display: grid;
         grid-template-columns: 1fr repeat(11, auto) 1fr;
         align-items: center;
+
+        @media (max-width: 500px) {
+            grid-template-columns: max-content repeat(8, auto);
+            margin-left: 0.5rem;
+
+            .Divider {
+                justify-self: center;
+            }
+        }
 
         .ProgramCounterText {
             margin: 0 0.5rem 0 0.5rem;

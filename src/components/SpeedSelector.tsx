@@ -7,6 +7,7 @@ import TooltipIconButton from "./TooltipIconButton";
 import './SpeedSelector.scss';
 
 type Props = {
+    buttonSize?: 'sm' | 'md' | 'lg' | 'xl';
     speed: number;
     setSpeed: (speed: number) => void;
     buttonClass: string;
@@ -24,6 +25,7 @@ function SpeedSelector(props: Props) {
                 onClose={() => setOpened(false)}
                 target={<TooltipIconButton hoverText={"Change execution speed"} className={props.buttonClass} color={"primary"}
                                            onClick={() => setOpened((open) => !open)}
+                                           size={props.buttonSize || "xl"}
                                            ariaLabel={"Change execution speed"}>
                     <SpeedIcon fontSize={"large"}/>
                 </TooltipIconButton>}

@@ -1,6 +1,7 @@
 import React, {useCallback, useRef, useState} from 'react';
 import {flushSync} from "react-dom";
-import {ActionIcon, Divider, MantineProvider, Text, Tooltip} from '@mantine/core';
+import {ActionIcon, Divider, MantineProvider, MediaQuery, Text, Tooltip} from '@mantine/core';
+import {useMediaQuery} from '@mantine/hooks';
 import {ReactSortable} from "react-sortablejs";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -37,6 +38,8 @@ function KHComputer() {
 
     const addCommandRef = useRef<HTMLDivElement>(null);
     const addRegisterRef = useRef<HTMLDivElement>(null);
+
+    const smallScreen = useMediaQuery('(max-width: 500px)');
 
 
     // Memoized callbacks to prevent updating each command when it's not necessary
@@ -328,7 +331,12 @@ function KHComputer() {
                 <div className={"Gap"}></div>
             </div>
             <div className="ActionsPalette">
-                <Text size="xl" className="ProgramCounterText" color="white" weight="bold">PC: </Text>
+                <MediaQuery
+                    query="(max-width: 500px)"
+                    styles={{ display: "none" }}
+                >
+                    <Text size={smallScreen ? "lg" : "xl"} className="ProgramCounterText" color="white" weight="bold">PC: </Text>
+                </MediaQuery>
                 <Tooltip label={"Program Counter"} position={"top"} withArrow>
                     <NonEmptyNumInput className="ProgramCounter"
                                       ariaLabel={"Program Counter"}
@@ -338,9 +346,10 @@ function KHComputer() {
                                       width={`${6 + digits10(commands.length)}ch`}
                                       update={(pc: number) => setPC(pc)}/>
                 </Tooltip>
-                <Divider orientation="vertical" />
+                <Divider orientation="vertical" className={"Divider"}/>
                 <TooltipIconButton className={"ActionButton"}
                                    color={"primary"}
+                                   size={smallScreen ? "lg" : "xl"}
                                    hoverText={running ? "Pause program execution at current PC"
                                                       : "Start program execution starting at the current PC"}
                                    ariaLabel={running ? "Pause program execution at current PC"
@@ -355,6 +364,7 @@ function KHComputer() {
                 </TooltipIconButton>
                 <TooltipIconButton className={"ActionButton"}
                                    color={"primary"}
+                                   size={smallScreen ? "lg" : "xl"}
                                    hoverText={"Step forward one command"}
                                    ariaLabel={"Step forward one command"}
                                    onClick={() => {
@@ -369,15 +379,23 @@ function KHComputer() {
                 </TooltipIconButton>
                 <TooltipIconButton className={"ActionButton"}
                                    color={"primary"}
+                                   size={smallScreen ? "lg" : "xl"}
                                    hoverText={"Reset PC to 0"}
                                    ariaLabel={"Reset PC to 0"}
                                    onClick={() => setPC(0)}>
                     <RotateLeft fontSize="large" />
                 </TooltipIconButton>
-                <Divider orientation="vertical" />
-                <SpeedSelector speed={speed} setSpeed={setSpeed} buttonClass={"ActionButton"}/>
-                <Divider orientation="vertical" />
-                <SaveProgram serializationFunction={serializeProgram.bind(null, commands, registers)}
+                <MediaQuery
+                    query="(max-width: 500px)"
+                    styles={{ display: "none" }}
+                >
+                    <Divider orientation="vertical" />
+                </MediaQuery>
+                <SpeedSelector speed={speed} setSpeed={setSpeed} buttonClass={"ActionButton"}
+                               buttonSize={smallScreen ? "lg" : "xl"}/>
+                <Divider orientation="vertical" className={"Divider"}/>
+                <SaveProgram buttonSize={smallScreen ? "lg" : "xl"}
+                             serializationFunction={serializeProgram.bind(null, commands, registers)}
                              deserializationFunction={deserializeProgram}
                              setCommands={setCommands}
                              setRegisters={setRegisters}
