@@ -189,6 +189,7 @@ function KHComputer() {
 
         if (pc > commands.length - 1) {
             pc = 0;
+            running = false;
         }
 
         return [pc, registers, running];
