@@ -23,7 +23,7 @@ function SpeedSelector(props: Props) {
             <Popover
                 opened={opened}
                 onClose={() => setOpened(false)}
-                target={<TooltipIconButton hoverText={"Change execution speed"} className={props.buttonClass} color={"primary"}
+                target={<TooltipIconButton hoverText={"Change execution speed"} iconClassName={props.buttonClass} color={"primary"}
                                            onClick={() => setOpened((open) => !open)}
                                            size={props.buttonSize || "xl"}
                                            ariaLabel={"Change execution speed"}>

@@ -43,7 +43,7 @@ const ProgramButton = memo((props: ProgramProps) => {
              onClick={() => props.selectProgram(props.code)}
         >
             {props.name}
-            <TooltipIconButton className={"RemoveButton"}
+            <TooltipIconButton iconClassName={"RemoveButton"}
                                color={"pink"}
                                size={"lg"}
                                hoverText={"Delete saved program"}
@@ -107,6 +107,11 @@ function SaveProgram(props: Props) {
                 opened={saveOpened}
                 onClose={() => setSaveOpened(false)}
                 title="Save Current Program"
+                styles={{
+                    title: {
+                        fontSize: '1.5rem',
+                    }
+                }}
             >
                 <div className={"SaveDialog"}>
                     <TextInput
@@ -157,6 +162,11 @@ function SaveProgram(props: Props) {
                 opened={loadOpened}
                 onClose={() => setLoadOpened(false)}
                 title="Load Program"
+                styles={{
+                    title: {
+                        fontSize: '1.5rem',
+                    }
+                }}
             >
                 <ProgramUpload loadFile={selectProgram}/>
                 {programs.map((program, index) => (
@@ -165,7 +175,7 @@ function SaveProgram(props: Props) {
                 ))}
             </Modal>
 
-            <TooltipIconButton className={"ActionButton"}
+            <TooltipIconButton iconClassName={"ActionButton"}
                                color={"primary"}
                                size={props.buttonSize}
                                hoverText={"Save current program"}
@@ -173,7 +183,7 @@ function SaveProgram(props: Props) {
                                onClick={() => setSaveOpened(true)}>
                 <SaveIcon fontSize="large" />
             </TooltipIconButton>
-            <TooltipIconButton className={"ActionButton"}
+            <TooltipIconButton iconClassName={"ActionButton"}
                                color={"primary"}
                                size={props.buttonSize}
                                hoverText={"Load program"}

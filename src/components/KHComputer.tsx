@@ -19,6 +19,7 @@ import Register from "./Register";
 import Command, {ARGUMENTLESS_COMMANDS, COMMAND_ARGUMENT_COMMANDS, CommandStruct, CommandType} from "./Command";
 import {deserializeProgram, serializeProgram} from "./ProgramSerialization";
 import './KHComputer.scss';
+import About from './About';
 
 const INITIAL_COMMAND_AMT = 10;
 const INITIAL_REGISTER_AMT = 10;
@@ -246,25 +247,33 @@ function KHComputer() {
                         primaryShade: 9,
                     }}
                 >
+                    <div className={"Gap"}/> {/* For center aligning */}
                     <TooltipButton command={"NOP"} hover_text={"Does nothing and increments the PC by 1."}
                                    ariaLabel={"Insert NOP command"}
+                                   size={smallScreen ? "lg" : "xl"}
                                    onClick={setCurrentCommandType.bind(undefined, CommandType.NOP)}/>
                     <TooltipButton command={"+"} hover_text={"Increments the register XX by 1 and increments the PC by 1."}
                                    ariaLabel={"Insert Increment command"}
+                                   size={smallScreen ? "lg" : "xl"}
                                    onClick={setCurrentCommandType.bind(undefined, CommandType.INCREMENT)}/>
                     <TooltipButton command={"-"} hover_text={"Decrements the register XX by 1and increments the PC by 1."}
                                    ariaLabel={"Insert Decrement command"}
+                                   size={smallScreen ? "lg" : "xl"}
                                    onClick={setCurrentCommandType.bind(undefined, CommandType.DECREMENT)}/>
                     <TooltipButton command={"j"} hover_text={"Sets the PC to XX"}
                                    ariaLabel={"Insert Jump command"}
+                                   size={smallScreen ? "lg" : "xl"}
                                    onClick={setCurrentCommandType.bind(undefined, CommandType.JUMP)}/>
                     <TooltipButton command={"0"} hover_text={"If register XX is 0, increments PC by 2, otherwise increments PC by 1."}
                                    ariaLabel={"Insert If Zero command"}
+                                   size={smallScreen ? "lg" : "xl"}
                                    onClick={setCurrentCommandType.bind(undefined, CommandType.IF_ZERO)}/>
                     <TooltipButton command={"Stop"} hover_text={"Stops execution."}
                                    ariaLabel={"Insert Stop command"}
+                                   size={smallScreen ? "lg" : "xl"}
                                    onClick={setCurrentCommandType.bind(undefined, CommandType.STOP)}/>
                 </MantineProvider>
+                <About buttonSize={smallScreen ? "lg" : "xl"}/>
             </div>
             <div className={"Computer"}>
                 <div className={"Gap"}></div>
@@ -347,7 +356,7 @@ function KHComputer() {
                                       update={(pc: number) => setPC(pc)}/>
                 </Tooltip>
                 <Divider orientation="vertical" className={"Divider"}/>
-                <TooltipIconButton className={"ActionButton"}
+                <TooltipIconButton iconClassName={"ActionButton"}
                                    color={"primary"}
                                    size={smallScreen ? "lg" : "xl"}
                                    hoverText={running ? "Pause program execution at current PC"
@@ -362,7 +371,7 @@ function KHComputer() {
                     {running ? <PauseIcon fontSize="large"/>
                              : <PlayArrow fontSize="large" />}
                 </TooltipIconButton>
-                <TooltipIconButton className={"ActionButton"}
+                <TooltipIconButton iconClassName={"ActionButton"}
                                    color={"primary"}
                                    size={smallScreen ? "lg" : "xl"}
                                    hoverText={"Step forward one command"}
@@ -377,7 +386,7 @@ function KHComputer() {
                                    }}>
                     <ArrowForwardIcon fontSize="large" />
                 </TooltipIconButton>
-                <TooltipIconButton className={"ActionButton"}
+                <TooltipIconButton iconClassName={"ActionButton"}
                                    color={"primary"}
                                    size={smallScreen ? "lg" : "xl"}
                                    hoverText={"Reset PC to 0"}
@@ -386,7 +395,7 @@ function KHComputer() {
                     <RotateLeft fontSize="large" />
                 </TooltipIconButton>
                 <MediaQuery
-                    query="(max-width: 500px)"
+                    query="(max-width: 800px)"
                     styles={{ display: "none" }}
                 >
                     <Divider orientation="vertical" />

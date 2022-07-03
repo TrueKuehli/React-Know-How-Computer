@@ -7,7 +7,8 @@ import './TooltipButton.scss';
 type Props = {
     children: ReactNode;
     hoverText: string;
-    className: string;
+    className?: string;
+    iconClassName?: string;
     ariaLabel: string;
     size?: 'sm' | 'md' | 'lg' | 'xl';
     position?: 'top' | 'bottom' | 'left' | 'right';
@@ -23,12 +24,13 @@ function TooltipIconButton(props: Props) {
 
     return (
         <Tooltip
+            className={props.className}
             label={props.hoverText}
             position={props.position}
             withArrow
         >
             <ActionIcon style={{color: theme.colors[color][props.shade || (theme.primaryShade as number)]}}
-                        size={props.size || "xl"} className={props.className}
+                        size={props.size || "xl"} className={props.iconClassName}
                         onClick={props.onClick} aria-label={props.ariaLabel}>
                 {props.children}
             </ActionIcon>

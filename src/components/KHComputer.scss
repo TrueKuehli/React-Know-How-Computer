@@ -87,6 +87,15 @@
         flex-direction: row;
         align-items: center;
         justify-content: center;
+
+        .Gap {
+            margin-right: auto;
+            width: 42px; // Same as about button on the right edge
+
+            @media (max-width: 500px) {
+                width: 0; // Remove if screen is too small
+            }
+        }
     }
 
     .ActionsPalette {
@@ -97,8 +106,10 @@
         @media (max-width: 500px) {
             grid-template-columns: max-content repeat(8, auto);
             margin-left: 0.5rem;
+        }
 
-            .Divider {
+        .Divider {
+            @media (max-width: 800px) {
                 justify-self: center;
             }
         }

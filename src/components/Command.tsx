@@ -95,7 +95,7 @@ function Command(props: Props) {
                                   disabled={ARGUMENTLESS_COMMANDS.includes(props.command.type)}/>
             </Tooltip>
 
-            <TooltipIconButton className={"RemoveButton"}
+            <TooltipIconButton iconClassName={"RemoveButton"}
                                ariaLabel={"Delete command"}
                                hoverText={"Delete command"}
                                color={"pink"}

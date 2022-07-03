@@ -32,7 +32,7 @@ function Register(props: Props) {
                               onClick={(e: React.MouseEvent<HTMLInputElement>) => {e.preventDefault(); e.stopPropagation()}}
                               update={(value: number) => { props.updateValue(props.index, value) }}/>
 
-            <TooltipIconButton className={"RemoveButton"}
+            <TooltipIconButton iconClassName={"RemoveButton"}
                                color={"pink"}
                                size={"lg"}
                                hoverText={"Delete register"}

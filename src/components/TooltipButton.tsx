@@ -7,6 +7,7 @@ type Props = {
     command: string;
     hover_text: string;
     ariaLabel: string;
+    size?: "sm" | "md" | "lg" | "xl";
     onClick?: () => void;
 }
 
@@ -17,7 +18,7 @@ function TooltipButton(props: Props) {
             position="bottom"
             withArrow
         >
-            <Button color="primary" className="CommandButton" size="xl" compact onClick={props.onClick}
+            <Button color="primary" className="CommandButton" size={props.size || "xl"} compact onClick={props.onClick}
                     aria-label={props.ariaLabel}>
                 {props.command}
             </Button>
