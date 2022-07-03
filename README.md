@@ -1,4 +1,4 @@
-# Web Know-how Computer
+# [Web Know-how Computer](https://truekuehli.github.io/React-Know-How-Computer/)
 
 Web-based simulation of the [Know-how Computer](https://en.wikipedia.org/wiki/WDR_paper_computer), also known as the 
 WDR paper computer.
