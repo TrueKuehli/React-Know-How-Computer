@@ -14,16 +14,14 @@ type Props = {
 }
 
 function LanguageSelector(props: Props) {
-    const {t} = useTranslation();
-
     const theme = useMantineTheme();
     const color = theme.primaryColor;
+    const {t} = useTranslation();
 
     return (
-        <Menu className="LanguageMenu" control={
+        <Menu className="LanguageMenu" menuButtonLabel={t("LanguageSelector.AriaLabel")} control={
             <ActionIcon className={"LanguageButton"}
                         size={props.buttonSize}
-                        aria-label={t("LanguageSelector.AriaLabel")}
             >
                 <LanguageIcon fontSize="large" style={{color: theme.colors[color][theme.primaryShade as number]}}/>
             </ActionIcon>}

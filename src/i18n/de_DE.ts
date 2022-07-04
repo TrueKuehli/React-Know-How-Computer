@@ -22,7 +22,7 @@ const translation = {
 
     "LanguageSelector": {
         "Tooltip": "Sprache",
-        "AriaLabel": "Sprache",
+        "AriaLabel": "Sprache ändern",
     },
 
     "Command": {
