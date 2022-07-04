@@ -5,6 +5,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import NonEmptyNumInput from "./NonEmptyNumInput";
 import TooltipIconButton from "./TooltipIconButton";
 import './Register.scss';
+import {useTranslation} from "react-i18next";
 
 type Props = {
     key: string;
@@ -18,6 +19,8 @@ type Props = {
 }
 
 function Register(props: Props) {
+    const {t} = useTranslation();
+
     return (
         <div className="Register" onClick={() => props.onClick(props.index)}
              style={{["--line_number_min_width" as any]: `${props.indexDigits + 2.5}ch`}}>
@@ -26,17 +29,17 @@ function Register(props: Props) {
             </div>
             <Divider className="Divider" orientation="vertical"/>
             <NonEmptyNumInput className="RegisterValue"
-                              ariaLabel={"Register value"}
+                              ariaLabel={t("Register.Value.AriaLabel")}
                               current={props.value}
                               width={`${6.5 + props.maxDigits}ch`}
                               onClick={(e: React.MouseEvent<HTMLInputElement>) => {e.preventDefault(); e.stopPropagation()}}
                               update={(value: number) => { props.updateValue(props.index, value) }}/>
 
-            <TooltipIconButton iconClassName={"RemoveButton"}
+            <TooltipIconButton icon={{className: "RemoveButton"}}
                                color={"pink"}
                                size={"lg"}
-                               hoverText={"Delete register"}
-                               ariaLabel={"Delete register"}
+                               hoverText={t("Register.DeleteButton.Tooltip")}
+                               ariaLabel={t("Register.DeleteButton.AriaLabel")}
                                position={"right"}
                                onClick={(e: React.MouseEvent) => {
                                    e.preventDefault(); e.stopPropagation()

@@ -1,17 +1,18 @@
 import React, {useCallback, useState, memo} from 'react';
 import {Button, Group, Modal, Switch, TextInput, useMantineTheme} from "@mantine/core";
 import {useLocalStorage} from "@mantine/hooks";
+import {showNotification} from "@mantine/notifications";
 import ClearIcon from "@mui/icons-material/Clear";
+import DoneIcon from '@mui/icons-material/Done';
+import ErrorIcon from "@mui/icons-material/Error";
 import FileOpenIcon from "@mui/icons-material/FileOpen";
 import SaveIcon from "@mui/icons-material/Save";
 
+import {CommandStruct} from "./Command";
 import TooltipIconButton from "./TooltipIconButton";
 import ProgramUpload from "./ProgramUpload";
-import {CommandStruct} from "./Command";
 import "./SaveProgram.scss";
-import {showNotification} from "@mantine/notifications";
-import ErrorIcon from "@mui/icons-material/Error";
-import DoneIcon from '@mui/icons-material/Done';
+import {useTranslation} from "react-i18next";
 
 type Props = {
     buttonSize?: 'sm' | 'md' | 'lg' | 'xl';
@@ -36,6 +37,7 @@ type ProgramProps = {
 
 const ProgramButton = memo((props: ProgramProps) => {
     const theme = useMantineTheme();
+    const {t} = useTranslation();
 
     return (
         <div className={"ProgramLoadButton"} style={{["--background-color" as any]: theme.colors[theme.primaryColor][0],
@@ -43,11 +45,11 @@ const ProgramButton = memo((props: ProgramProps) => {
              onClick={() => props.selectProgram(props.code)}
         >
             {props.name}
-            <TooltipIconButton iconClassName={"RemoveButton"}
+            <TooltipIconButton icon={{className: "RemoveButton"}}
                                color={"pink"}
                                size={"lg"}
-                               hoverText={"Delete saved program"}
-                               ariaLabel={"Delete saved program"}
+                               hoverText={t("LoadProgram.DeleteButton.Tooltip")}
+                               ariaLabel={t("LoadProgram.DeleteButton.AriaLabel")}
                                position={"top"}
                                onClick={() => props.removeProgram(props.index)}>
                 <ClearIcon fontSize={"medium"}/>
@@ -66,6 +68,8 @@ function SaveProgram(props: Props) {
     const [programs, savePrograms] = useLocalStorage<{name: string, code: string}[]>(
         {key: "storedPrograms", defaultValue: []});
 
+    const {t} = useTranslation();
+
     const removeProgram = useCallback((index: number) => {
         savePrograms((prevState) => [
             ...prevState.slice(0, index),
@@ -77,8 +81,8 @@ function SaveProgram(props: Props) {
         const result = props.deserializationFunction(code);
         if (typeof(result) === "string") {
             return showNotification({
-                title: "Invalid file",
-                message: `File content does not appear to be a valid Know-How Computer program:\n${result}`,
+                title: t("LoadProgram.ErrorNotification.Title"),
+                message: t("LoadProgram.ErrorNotification.Message", {message: result}),
                 autoClose: 5000,
                 color: "red",
                 icon: <ErrorIcon/>,
@@ -93,20 +97,20 @@ function SaveProgram(props: Props) {
         setLoadOpened(false);
 
         return showNotification({
-            title: "Loading Successful",
-            message: "Successfully loaded program",
+            title: t("LoadProgram.SuccessNotification.Title"),
+            message: t("LoadProgram.SuccessNotification.Message"),
             autoClose: 2000,
             color: "green",
             icon: <DoneIcon/>,
         });
-    }, [props, setLoadOpened]);
+    }, [props, setLoadOpened, t]);
 
     return (
         <>
             <Modal
                 opened={saveOpened}
                 onClose={() => setSaveOpened(false)}
-                title="Save Current Program"
+                title={t("SaveProgram.Title")}
                 styles={{
                     title: {
                         fontSize: '1.5rem',
@@ -115,15 +119,16 @@ function SaveProgram(props: Props) {
             >
                 <div className={"SaveDialog"}>
                     <TextInput
-                        placeholder="example"
-                        label="Program Name"
+                        placeholder={t("SaveProgram.NameInput.Placeholder")}
+                        label={t("SaveProgram.NameInput.Label")}
                         value={name}
                         onChange={(e) => setName(e.currentTarget.value)}
                     />
+
                     <Switch
                         checked={storeRegisters}
                         onChange={(event) => setStoreRegisters(event.currentTarget.checked)}
-                        label="Save Register Values"
+                        label={t("SaveProgram.SaveRegisterValuesSwitch.Label")}
                     />
                     <Group position="center" grow>
                         <Button onClick={() => {
@@ -134,14 +139,14 @@ function SaveProgram(props: Props) {
                             setSaveOpened(false);
 
                             return showNotification({
-                                title: "Save Successful",
-                                message: "Successfully saved program to browser",
+                                title: t("SaveProgram.SuccessNotification.Title"),
+                                message: t("SaveProgram.SuccessNotification.Message"),
                                 autoClose: 2000,
                                 color: "green",
                                 icon: <DoneIcon/>,
                             });
                         }}>
-                            Save to Browser
+                            {t("SaveProgram.SaveButtonLabel")}
                         </Button>
                         <Button onClick={() => {
                             const program = props.serializationFunction(name, storeRegisters);
@@ -149,11 +154,13 @@ function SaveProgram(props: Props) {
 
                             const link = document.createElement("a");
                             link.href = URL.createObjectURL(blob);
-                            link.download = (program.name || "khc-program") + ".json";
+                            link.download = (program.name || t("SaveProgram.DefaultName")) + ".json";
                             link.click();
 
                             setSaveOpened(false);
-                        }}>Export to File</Button>
+                        }}>
+                            {t("SaveProgram.ExportButtonLabel")}
+                        </Button>
                     </Group>
                 </div>
             </Modal>
@@ -161,7 +168,7 @@ function SaveProgram(props: Props) {
             <Modal
                 opened={loadOpened}
                 onClose={() => setLoadOpened(false)}
-                title="Load Program"
+                title={t("LoadProgram.Title")}
                 styles={{
                     title: {
                         fontSize: '1.5rem',
@@ -175,19 +182,19 @@ function SaveProgram(props: Props) {
                 ))}
             </Modal>
 
-            <TooltipIconButton iconClassName={"ActionButton"}
+            <TooltipIconButton icon={{className: "ActionButton"}}
                                color={"primary"}
                                size={props.buttonSize}
-                               hoverText={"Save current program"}
-                               ariaLabel={"Save current program"}
+                               hoverText={t("SaveProgram.Button.Tooltip")}
+                               ariaLabel={t("SaveProgram.Button.AriaLabel")}
                                onClick={() => setSaveOpened(true)}>
                 <SaveIcon fontSize="large" />
             </TooltipIconButton>
-            <TooltipIconButton iconClassName={"ActionButton"}
+            <TooltipIconButton icon={{className: "ActionButton"}}
                                color={"primary"}
                                size={props.buttonSize}
-                               hoverText={"Load program"}
-                               ariaLabel={"Load program"}
+                               hoverText={t("LoadProgram.Button.Tooltip")}
+                               ariaLabel={t("LoadProgram.Button.AriaLabel")}
                                onClick={() => setLoadOpened(true)}>
                 <FileOpenIcon fontSize="large" />
             </TooltipIconButton>

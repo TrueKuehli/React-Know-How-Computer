@@ -1,4 +1,5 @@
 import React, {useRef, memo} from 'react';
+import {useTranslation} from "react-i18next";
 import {Divider, TextInput, Tooltip, useMantineTheme} from "@mantine/core";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -46,6 +47,7 @@ type Props = {
 function Command(props: Props) {
     const ref = useRef<HTMLInputElement>(null);
     const theme = useMantineTheme();
+    const {t} = useTranslation();
 
     return (
         <div className="Command" onClick={() => props.onClick(props.line)}
@@ -56,9 +58,9 @@ function Command(props: Props) {
                 {props.current ? <ArrowForwardIcon fontSize={"medium"} className={"LineArrow"}/> : props.line}
             </div>
             <Divider className="Divider" orientation="vertical"/>
-            <Tooltip label={"Command"} position="top" withArrow>
+            <Tooltip label={t("Command.Command.Tooltip")} position="top" withArrow>
                 <TextInput className="CommandInput"
-                           aria-label={"Command"}
+                           aria-label={t("Command.Command.AriaLabel")}
                            value={props.command.type}
                            ref={ref}
                            onInput={(evt) => {
@@ -84,9 +86,9 @@ function Command(props: Props) {
                                 }
                            }}/>
             </Tooltip>
-            <Tooltip label={"Target"} position="top" withArrow>
+            <Tooltip label={t("Command.Target.Tooltip")} position="top" withArrow>
                 <NonEmptyNumInput className="RegisterSelect"
-                                  ariaLabel={"Register or command reference"}
+                                  ariaLabel={t("Command.Target.AriaLabel")}
                                   current={props.command.reference || 0}
                                   min={0}
                                   max={props.maxVal - 1}
@@ -95,9 +97,9 @@ function Command(props: Props) {
                                   disabled={ARGUMENTLESS_COMMANDS.includes(props.command.type)}/>
             </Tooltip>
 
-            <TooltipIconButton iconClassName={"RemoveButton"}
-                               ariaLabel={"Delete command"}
-                               hoverText={"Delete command"}
+            <TooltipIconButton icon={{className: "RemoveButton"}}
+                               ariaLabel={t("Command.Delete.AriaLabel")}
+                               hoverText={t("Command.Delete.Tooltip")}
                                color={"pink"}
                                size={"lg"}
                                position={"right"}

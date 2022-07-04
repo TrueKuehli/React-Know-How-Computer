@@ -20,6 +20,8 @@ import Command, {ARGUMENTLESS_COMMANDS, COMMAND_ARGUMENT_COMMANDS, CommandStruct
 import {deserializeProgram, serializeProgram} from "./ProgramSerialization";
 import './KHComputer.scss';
 import About from './About';
+import {useTranslation} from "react-i18next";
+import LanguageSelector from './LanguageSelector';
 
 const INITIAL_COMMAND_AMT = 10;
 const INITIAL_REGISTER_AMT = 10;
@@ -41,6 +43,7 @@ function KHComputer() {
     const addRegisterRef = useRef<HTMLDivElement>(null);
 
     const smallScreen = useMediaQuery('(max-width: 500px)');
+    const {t} = useTranslation();
 
 
     // Memoized callbacks to prevent updating each command when it's not necessary
@@ -248,38 +251,41 @@ function KHComputer() {
                     }}
                 >
                     <div className={"Gap"}/> {/* For center aligning */}
-                    <TooltipButton command={"NOP"} hover_text={"Does nothing and increments the PC by 1."}
-                                   ariaLabel={"Insert NOP command"}
+                    <TooltipButton command={"NOP"} hover_text={t("Commands.NOP.Tooltip")}
+                                   ariaLabel={t("Commands.NOP.AriaLabel")}
                                    size={smallScreen ? "lg" : "xl"}
                                    onClick={setCurrentCommandType.bind(undefined, CommandType.NOP)}/>
-                    <TooltipButton command={"+"} hover_text={"Increments the register XX by 1 and increments the PC by 1."}
-                                   ariaLabel={"Insert Increment command"}
+                    <TooltipButton command={"+"} hover_text={t("Commands.+.Tooltip")}
+                                   ariaLabel={t("Commands.+.AriaLabel")}
                                    size={smallScreen ? "lg" : "xl"}
                                    onClick={setCurrentCommandType.bind(undefined, CommandType.INCREMENT)}/>
-                    <TooltipButton command={"-"} hover_text={"Decrements the register XX by 1and increments the PC by 1."}
-                                   ariaLabel={"Insert Decrement command"}
+                    <TooltipButton command={"-"} hover_text={t("Commands.-.Tooltip")}
+                                   ariaLabel={t("Commands.-.AriaLabel")}
                                    size={smallScreen ? "lg" : "xl"}
                                    onClick={setCurrentCommandType.bind(undefined, CommandType.DECREMENT)}/>
-                    <TooltipButton command={"j"} hover_text={"Sets the PC to XX"}
-                                   ariaLabel={"Insert Jump command"}
+                    <TooltipButton command={"j"} hover_text={t("Commands.j.Tooltip")}
+                                   ariaLabel={t("Commands.j.AriaLabel")}
                                    size={smallScreen ? "lg" : "xl"}
                                    onClick={setCurrentCommandType.bind(undefined, CommandType.JUMP)}/>
-                    <TooltipButton command={"0"} hover_text={"If register XX is 0, increments PC by 2, otherwise increments PC by 1."}
-                                   ariaLabel={"Insert If Zero command"}
+                    <TooltipButton command={"0"} hover_text={t("Commands.0.Tooltip")}
+                                   ariaLabel={t("Commands.0.AriaLabel")}
                                    size={smallScreen ? "lg" : "xl"}
                                    onClick={setCurrentCommandType.bind(undefined, CommandType.IF_ZERO)}/>
-                    <TooltipButton command={"Stop"} hover_text={"Stops execution."}
-                                   ariaLabel={"Insert Stop command"}
+                    <TooltipButton command={"Stop"} hover_text={t("Commands.Stop.Tooltip")}
+                                   ariaLabel={t("Commands.Stop.AriaLabel")}
                                    size={smallScreen ? "lg" : "xl"}
                                    onClick={setCurrentCommandType.bind(undefined, CommandType.STOP)}/>
                 </MantineProvider>
+                <LanguageSelector buttonSize={smallScreen ? "lg" : "xl"}/>
                 <About buttonSize={smallScreen ? "lg" : "xl"}/>
             </div>
             <div className={"Computer"}>
                 <div className={"Gap"}></div>
 
                 <div className="CodeField">
-                    <Text size="xl" className="CommandsHeader" color="white" weight="bold">Commands </Text>
+                    <Text size="xl" className="CommandsHeader" color="white" weight="bold">
+                        {t("CommandBox.Title")}
+                    </Text>
                     <ReactSortable handle={".DragHandle"}
                                    list={commands}
                                    setList={setCommands}>
@@ -305,7 +311,7 @@ function KHComputer() {
                     </ReactSortable>
                     <div className="ItemAdd" ref={addCommandRef} onClick={addCommand}>
                         <ActionIcon size={"xl"} className={"CommandAddIcon"} variant={"transparent"}
-                                    aria-label={"Add new command"}>
+                                    aria-label={t("CommandBox.AddCommand.AriaLabel")}>
                             <AddCircleIcon fontSize="large" />
                         </ActionIcon>
                     </div>
@@ -314,7 +320,9 @@ function KHComputer() {
                 <div className={"Gap"}></div>
 
                 <div className="RegisterField">
-                    <Text size="xl" className="RegistersHeader" color="white" weight="bold">Registers </Text>
+                    <Text size="xl" className="RegistersHeader" color="white" weight="bold">
+                        {t("RegisterBox.Title")}
+                    </Text>
                     {
                         registers.map((register, index) => {
                             return (
@@ -331,7 +339,7 @@ function KHComputer() {
                     }
                     <div className="ItemAdd" ref={addRegisterRef} onClick={addRegister}>
                         <ActionIcon size={"xl"} className={"CommandAddIcon"} variant={"transparent"}
-                                    aria-label={"Add new register"}>
+                                    aria-label={t("RegisterBox.AddRegister.AriaLabel")}>
                             <AddCircleIcon fontSize="large" />
                         </ActionIcon>
                     </div>
@@ -344,11 +352,13 @@ function KHComputer() {
                     query="(max-width: 500px)"
                     styles={{ display: "none" }}
                 >
-                    <Text size={smallScreen ? "lg" : "xl"} className="ProgramCounterText" color="white" weight="bold">PC: </Text>
+                    <Text size={smallScreen ? "lg" : "xl"} className="ProgramCounterText" color="white" weight="bold">
+                        {t("ActionsPalette.PC.Label")}:
+                    </Text>
                 </MediaQuery>
-                <Tooltip label={"Program Counter"} position={"top"} withArrow>
+                <Tooltip label={t("ActionsPalette.PC.Tooltip")} position={"top"} withArrow>
                     <NonEmptyNumInput className="ProgramCounter"
-                                      ariaLabel={"Program Counter"}
+                                      ariaLabel={t("ActionsPalette.PC.AriaLabel")}
                                       current={pc}
                                       min={0}
                                       max={Math.max(commands.length - 1, 0)}
@@ -356,13 +366,13 @@ function KHComputer() {
                                       update={(pc: number) => setPC(pc)}/>
                 </Tooltip>
                 <Divider orientation="vertical" className={"Divider"}/>
-                <TooltipIconButton iconClassName={"ActionButton"}
+                <TooltipIconButton icon={{className: "ActionButton"}}
                                    color={"primary"}
                                    size={smallScreen ? "lg" : "xl"}
-                                   hoverText={running ? "Pause program execution at current PC"
-                                                      : "Start program execution starting at the current PC"}
-                                   ariaLabel={running ? "Pause program execution at current PC"
-                                                      : "Start program execution starting at the current PC"}
+                                   hoverText={running ? t("ActionsPalette.Pause.Tooltip")
+                                                      : t("ActionsPalette.Start.Tooltip")}
+                                   ariaLabel={running ? t("ActionsPalette.Pause.AriaLabel")
+                                                      : t("ActionsPalette.Start.AriaLabel")}
                                    onClick={() => {
                                        setRunning(!running)
 
@@ -371,11 +381,11 @@ function KHComputer() {
                     {running ? <PauseIcon fontSize="large"/>
                              : <PlayArrow fontSize="large" />}
                 </TooltipIconButton>
-                <TooltipIconButton iconClassName={"ActionButton"}
+                <TooltipIconButton icon={{className: "ActionButton"}}
                                    color={"primary"}
                                    size={smallScreen ? "lg" : "xl"}
-                                   hoverText={"Step forward one command"}
-                                   ariaLabel={"Step forward one command"}
+                                   hoverText={t("ActionsPalette.Step.Tooltip")}
+                                   ariaLabel={t("ActionsPalette.Step.AriaLabel")}
                                    onClick={() => {
                                        const [endPC, registerContent, isRunning] = executeCurrentCell(pc, registers);
                                        flushSync(() => {
@@ -386,11 +396,11 @@ function KHComputer() {
                                    }}>
                     <ArrowForwardIcon fontSize="large" />
                 </TooltipIconButton>
-                <TooltipIconButton iconClassName={"ActionButton"}
+                <TooltipIconButton icon={{className: "ActionButton"}}
                                    color={"primary"}
                                    size={smallScreen ? "lg" : "xl"}
-                                   hoverText={"Reset PC to 0"}
-                                   ariaLabel={"Reset PC to 0"}
+                                   hoverText={t("ActionsPalette.ResetPC.Tooltip")}
+                                   ariaLabel={t("ActionsPalette.ResetPC.AriaLabel")}
                                    onClick={() => setPC(0)}>
                     <RotateLeft fontSize="large" />
                 </TooltipIconButton>

@@ -4,6 +4,7 @@ import {MantineProvider} from "@mantine/core";
 import {NotificationsProvider} from '@mantine/notifications';
 
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import './i18n/i18n';
 import KHComputer from './components/KHComputer';
 import './index.scss';
 

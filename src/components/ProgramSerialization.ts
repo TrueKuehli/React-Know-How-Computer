@@ -1,4 +1,5 @@
 import {COMMAND_ARGUMENT_COMMANDS, REGISTER_COMMANDS, CommandStruct, CommandType} from "./Command";
+import i18next from 'i18next';
 
 function serializeProgram(commands: CommandStruct[], registers: number[], name: string,
                           serializeRegisters: boolean): {name: string, code: string} {
@@ -45,22 +46,28 @@ function serializeProgram(commands: CommandStruct[], registers: number[], name: 
 }
 
 function deserializeProgram(fileContent: string): [CommandStruct[], number[]] | string {
-    const program: {commands: CommandStruct[], registers: number[] | undefined} = JSON.parse(fileContent);
+    let program: {commands: CommandStruct[], registers: number[] | undefined};
+    try {
+        program = JSON.parse(fileContent);
+    } catch (e) {
+        return i18next.t("Error.InvalidJSON");
+    }
 
     // Determine if read json program is valid
     if (typeof(program) !== "object" || !program.commands) {
-        return "No commands found in file.";
+        return i18next.t("Error.NoCommands");
     }
 
     let error = "";
     // Check if commands are properly formatted
     if (!program.commands.every((command, idx) => {
         // Check types
+        // noinspection SuspiciousTypeOfGuard
         if (typeof(command) !== "object"
                 || !Object.values(CommandType).includes(command.type)
                 || typeof(command.reference) !== "number")
         {
-            error = `Command ${idx} is not properly formatted.`;
+            error = i18next.t("Error.IncorrectFormatting", {line: idx});
             return false;
         }
 
@@ -68,7 +75,7 @@ function deserializeProgram(fileContent: string): [CommandStruct[], number[]] | 
         if (command.reference < 0
             || (COMMAND_ARGUMENT_COMMANDS.includes(command.type) && command.reference >= program.commands.length))
         {
-            error = `Command ${idx} is referencing a non-existent command.`;
+            error = i18next.t("Error.InvalidCommandReference", {line: idx});
             return false;
         }
 
@@ -79,8 +86,9 @@ function deserializeProgram(fileContent: string): [CommandStruct[], number[]] | 
     }
 
     // Check if registers are properly formatted
+    // noinspection SuspiciousTypeOfGuard
     if (program.registers && !program.registers.every(register => typeof(register) === "number")) {
-        return "Non-numeric register found.";
+        return i18next.t("Error.NonNumericRegister");
     }
 
     // Check if register references are in range. Otherwise, regenerate registers

@@ -8,7 +8,9 @@ type Props = {
     children: ReactNode;
     hoverText: string;
     className?: string;
-    iconClassName?: string;
+    icon?: {
+        className?: string;
+    }
     ariaLabel: string;
     size?: 'sm' | 'md' | 'lg' | 'xl';
     position?: 'top' | 'bottom' | 'left' | 'right';
@@ -30,7 +32,7 @@ function TooltipIconButton(props: Props) {
             withArrow
         >
             <ActionIcon style={{color: theme.colors[color][props.shade || (theme.primaryShade as number)]}}
-                        size={props.size || "xl"} className={props.iconClassName}
+                        size={props.size || "xl"} className={props.icon?.className}
                         onClick={props.onClick} aria-label={props.ariaLabel}>
                 {props.children}
             </ActionIcon>
