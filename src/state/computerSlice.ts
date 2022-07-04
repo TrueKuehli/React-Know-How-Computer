@@ -74,6 +74,8 @@ export const computerSlice = createSlice({
         },
         setCommands: (state, action: PayloadAction<CommandStruct[]>) => {
             state.commands = action.payload;
+            state.nextCommandID = action.payload.reduce(
+                (max: number, command) => Math.max(max, command.id), 0) + 1 ;
         },
         setCommand: (state, action: PayloadAction<{id: number, command: CommandStruct}>) => {
             const index = state.commands.findIndex(c => c.id === action.payload.id);
@@ -112,6 +114,7 @@ export const computerSlice = createSlice({
         removeCommand: (state, action: PayloadAction<number>) => {
             const index = state.commands.findIndex(c => c.id === action.payload);
             if (index === -1) return;
+            if (state.commands.length < 2) return;
 
             state.commands.splice(index, 1);
 
@@ -128,6 +131,8 @@ export const computerSlice = createSlice({
             state.registers.push(0);
         },
         removeRegister: (state, action: PayloadAction<number>) => {
+            if (state.registers.length < 2) return;
+
             state.registers.splice(action.payload, 1);
 
             // Update references >= the removed register

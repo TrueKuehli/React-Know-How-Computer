@@ -54,7 +54,7 @@ function Command(props: Props) {
     const {t} = useTranslation();
 
     return (
-        <div className="Command" onClick={() => dispatch(setSelectedCommand(props.line))}
+        <div className="Command" onClick={() => dispatch(setSelectedCommand(props.command.id))}
              style={{...(props.selected ? {backgroundColor: theme.colors[theme.primaryColor][2]} : {}),
                      ["--line_number_min_width" as any]: `${props.lineDigits + 2.5}ch`}}>
             <DragHandleIcon className={"DragHandle"} fontSize={"medium"}/>
