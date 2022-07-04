@@ -1,13 +1,13 @@
-import i18next from "i18next";
 import React, {useCallback} from "react";
+import i18next from "i18next";
 import {useTranslation} from "react-i18next";
 import {useMantineTheme, Text} from "@mantine/core";
-import {FullScreenDropzone, DropzoneStatus} from '@mantine/dropzone';
-import {showNotification} from '@mantine/notifications';
+import {FullScreenDropzone, DropzoneStatus} from "@mantine/dropzone";
+import {showNotification} from "@mantine/notifications";
 import {SvgIconProps} from "@mui/material/SvgIcon/SvgIcon";
 import UploadIcon from "@mui/icons-material/Upload";
-import CancelIcon from '@mui/icons-material/Cancel';
-import ErrorIcon from '@mui/icons-material/Error';
+import CancelIcon from "@mui/icons-material/Cancel";
+import ErrorIcon from "@mui/icons-material/Error";
 
 import "./ProgramUpload.scss";
 
@@ -19,7 +19,8 @@ type Props = {
     loadFile: (file: string) => void;
 }
 
-function ImageUploadIcon(props: UploadIconProps) {
+
+function ProgramUploadIcon(props: UploadIconProps) {
     const {status, ...iconProps} = props;
 
     if (props.status.accepted) {
@@ -40,7 +41,7 @@ function dropzoneChildren(status: DropzoneStatus) {
 
     return (
         <div className={"DropzoneContent"}>
-            <ImageUploadIcon status={status} fontSize={"inherit"} className={"DropzoneIcon"} />
+            <ProgramUploadIcon status={status} fontSize={"inherit"} className={"DropzoneIcon"} />
 
             <div>
                 <Text size="xl" className={"DropzoneText"}>

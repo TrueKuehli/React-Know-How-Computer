@@ -1,11 +1,14 @@
-import React, {memo} from 'react';
+import React, {memo} from "react";
 import {Divider} from "@mantine/core";
-import ClearIcon from '@mui/icons-material/Clear';
-
-import NonEmptyNumInput from "./NonEmptyNumInput";
-import TooltipIconButton from "./TooltipIconButton";
-import './Register.scss';
+import ClearIcon from "@mui/icons-material/Clear";
 import {useTranslation} from "react-i18next";
+
+import {useAppSelector, useAppDispatch} from "../../../state/stateHooks";
+import {removeRegister, setCommandRegister, setRegister} from "../../../state/computerSlice";
+
+import NonEmptyNumInput from "../../generic/NonEmptyNumInput";
+import TooltipIconButton from "../../generic/TooltipIconButton";
+import "./Register.scss";
 
 type Props = {
     key: string;
@@ -13,17 +16,18 @@ type Props = {
     indexDigits: number;
     maxDigits: number;
     value: number;
-    removeRegister: (index: number) => void;
-    updateValue: (index: number, value: number) => void;
-    onClick: (index: number) => void;
 }
 
 function Register(props: Props) {
+    const dispatch = useAppDispatch();
+    const selectedCommand = useAppSelector((state) => state.computerUI.selectedCommand);
+
     const {t} = useTranslation();
 
     return (
-        <div className="Register" onClick={() => props.onClick(props.index)}
-             style={{["--line_number_min_width" as any]: `${props.indexDigits + 2.5}ch`}}>
+        <div className="Register" style={{["--line_number_min_width" as any]: `${props.indexDigits + 2.5}ch`}}
+             onClick={() => dispatch(setCommandRegister({"id": selectedCommand, "ref": props.index}))}
+        >
             <div className="Index">
                 {props.index}
             </div>
@@ -33,7 +37,7 @@ function Register(props: Props) {
                               current={props.value}
                               width={`${6.5 + props.maxDigits}ch`}
                               onClick={(e: React.MouseEvent<HTMLInputElement>) => {e.preventDefault(); e.stopPropagation()}}
-                              update={(value: number) => { props.updateValue(props.index, value) }}/>
+                              update={(value: number) => dispatch(setRegister({id: props.index, value}))}/>
 
             <TooltipIconButton icon={{className: "RemoveButton"}}
                                color={"pink"}
@@ -42,8 +46,8 @@ function Register(props: Props) {
                                ariaLabel={t("Register.DeleteButton.AriaLabel")}
                                position={"right"}
                                onClick={(e: React.MouseEvent) => {
-                                   e.preventDefault(); e.stopPropagation()
-                                   props.removeRegister(props.index)
+                                   e.preventDefault(); e.stopPropagation();
+                                   dispatch(removeRegister(props.index));
                                }}>
                 <ClearIcon fontSize={"medium"}/>
             </TooltipIconButton>

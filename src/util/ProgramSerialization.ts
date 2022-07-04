@@ -1,5 +1,5 @@
-import {COMMAND_ARGUMENT_COMMANDS, REGISTER_COMMANDS, CommandStruct, CommandType} from "./Command";
-import i18next from 'i18next';
+import {COMMAND_ARGUMENT_COMMANDS, REGISTER_COMMANDS, CommandStruct, CommandType} from "../components/Computer/CodeField/Command";
+import i18next from "i18next";
 
 function serializeProgram(commands: CommandStruct[], registers: number[], name: string,
                           serializeRegisters: boolean): {name: string, code: string} {

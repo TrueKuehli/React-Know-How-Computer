@@ -2,10 +2,10 @@ import React from "react";
 import {useTranslation} from "react-i18next";
 import {ActionIcon, Menu, useMantineTheme} from "@mantine/core";
 import LanguageIcon from "@mui/icons-material/Language";
-import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
-import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 
-import languages from "../i18n/languages";
+import languages from "../../i18n/languages";
 import "./LanguageSelector.scss";
 import i18next from "i18next";
 

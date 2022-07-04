@@ -1,29 +1,25 @@
-import React, {useCallback, useState, memo} from 'react';
+import React, {useCallback, useState, memo} from "react";
+import {useTranslation} from "react-i18next";
 import {Button, Group, Modal, Switch, TextInput, useMantineTheme} from "@mantine/core";
 import {useLocalStorage} from "@mantine/hooks";
 import {showNotification} from "@mantine/notifications";
 import ClearIcon from "@mui/icons-material/Clear";
-import DoneIcon from '@mui/icons-material/Done';
+import DoneIcon from "@mui/icons-material/Done";
 import ErrorIcon from "@mui/icons-material/Error";
 import FileOpenIcon from "@mui/icons-material/FileOpen";
 import SaveIcon from "@mui/icons-material/Save";
 
-import {CommandStruct} from "./Command";
-import TooltipIconButton from "./TooltipIconButton";
+import {useAppDispatch, useAppSelector} from "../../state/stateHooks";
+import {setCommands, setRegisters, setPC} from "../../state/computerSlice";
+import {deserializeProgram, serializeProgram} from "../../util/ProgramSerialization";
+
+import TooltipIconButton from "../generic/TooltipIconButton";
 import ProgramUpload from "./ProgramUpload";
 import "./SaveProgram.scss";
-import {useTranslation} from "react-i18next";
+
 
 type Props = {
-    buttonSize?: 'sm' | 'md' | 'lg' | 'xl';
-
-    // Bound function already containing: // commands: CommandStruct[], registers: number[]
-    serializationFunction: (name: string, saveRegisters: boolean) => {name: string, code: string};
-
-    deserializationFunction: (fileContent: string) => ([CommandStruct[], number[]] | string);
-    setCommands: (commands: CommandStruct[]) => void;
-    setRegisters: (registers: number[]) => void;
-    setPC: (pc: number) => void;
+    buttonSize?: "sm" | "md" | "lg" | "xl";
 }
 
 type ProgramProps = {
@@ -34,6 +30,7 @@ type ProgramProps = {
     removeProgram: (index: number) => void;
     selectProgram: (code: string) => void;
 }
+
 
 const ProgramButton = memo((props: ProgramProps) => {
     const theme = useMantineTheme();
@@ -51,7 +48,8 @@ const ProgramButton = memo((props: ProgramProps) => {
                                hoverText={t("LoadProgram.DeleteButton.Tooltip")}
                                ariaLabel={t("LoadProgram.DeleteButton.AriaLabel")}
                                position={"top"}
-                               onClick={() => props.removeProgram(props.index)}>
+                               onClick={() => props.removeProgram(props.index)}
+            >
                 <ClearIcon fontSize={"medium"}/>
             </TooltipIconButton>
         </div>
@@ -60,6 +58,10 @@ const ProgramButton = memo((props: ProgramProps) => {
 
 
 function SaveProgram(props: Props) {
+    const dispatch = useAppDispatch();
+    const commands = useAppSelector(state => state.computer.commands);
+    const registers = useAppSelector(state => state.computer.registers);
+
     const [saveOpened, setSaveOpened] = useState(false);
     const [loadOpened, setLoadOpened] = useState(false);
     const [storeRegisters, setStoreRegisters] = useState(true);
@@ -78,7 +80,7 @@ function SaveProgram(props: Props) {
     }, [savePrograms]);
 
     const selectProgram = useCallback((code: string) => {
-        const result = props.deserializationFunction(code);
+        const result = deserializeProgram(code);
         if (typeof(result) === "string") {
             return showNotification({
                 title: t("LoadProgram.ErrorNotification.Title"),
@@ -90,9 +92,9 @@ function SaveProgram(props: Props) {
         }
         const [commands, registers] = result;
 
-        props.setCommands(commands);
-        props.setRegisters(registers);
-        props.setPC(0);
+        dispatch(setCommands(commands));
+        dispatch(setRegisters(registers));
+        dispatch(setPC(0));
 
         setLoadOpened(false);
 
@@ -103,7 +105,8 @@ function SaveProgram(props: Props) {
             color: "green",
             icon: <DoneIcon/>,
         });
-    }, [props, setLoadOpened, t]);
+    }, [dispatch, t]);
+
 
     return (
         <>
@@ -113,7 +116,7 @@ function SaveProgram(props: Props) {
                 title={t("SaveProgram.Title")}
                 styles={{
                     title: {
-                        fontSize: '1.5rem',
+                        fontSize: "1.5rem",
                     }
                 }}
             >
@@ -134,7 +137,7 @@ function SaveProgram(props: Props) {
                         <Button onClick={() => {
                             savePrograms((prevState) => [
                                 ...prevState,
-                                props.serializationFunction(name, storeRegisters)
+                                serializeProgram(commands, registers, name, storeRegisters)
                             ]);
                             setSaveOpened(false);
 
@@ -149,7 +152,7 @@ function SaveProgram(props: Props) {
                             {t("SaveProgram.SaveButtonLabel")}
                         </Button>
                         <Button onClick={() => {
-                            const program = props.serializationFunction(name, storeRegisters);
+                            const program = serializeProgram(commands, registers, name, storeRegisters);
                             const blob = new Blob([program.code], {type: "application/json;charset=utf-8"});
 
                             const link = document.createElement("a");
@@ -171,7 +174,7 @@ function SaveProgram(props: Props) {
                 title={t("LoadProgram.Title")}
                 styles={{
                     title: {
-                        fontSize: '1.5rem',
+                        fontSize: "1.5rem",
                     }
                 }}
             >
@@ -187,7 +190,8 @@ function SaveProgram(props: Props) {
                                size={props.buttonSize}
                                hoverText={t("SaveProgram.Button.Tooltip")}
                                ariaLabel={t("SaveProgram.Button.AriaLabel")}
-                               onClick={() => setSaveOpened(true)}>
+                               onClick={() => setSaveOpened(true)}
+            >
                 <SaveIcon fontSize="large" />
             </TooltipIconButton>
             <TooltipIconButton icon={{className: "ActionButton"}}
@@ -195,7 +199,8 @@ function SaveProgram(props: Props) {
                                size={props.buttonSize}
                                hoverText={t("LoadProgram.Button.Tooltip")}
                                ariaLabel={t("LoadProgram.Button.AriaLabel")}
-                               onClick={() => setLoadOpened(true)}>
+                               onClick={() => setLoadOpened(true)}
+            >
                 <FileOpenIcon fontSize="large" />
             </TooltipIconButton>
         </>

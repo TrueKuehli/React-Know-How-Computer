@@ -5,12 +5,12 @@ type Language = {
 
 const languages: Language[] = [
     {
-        name: 'English',
-        code: 'en',
+        name: "English",
+        code: "en",
     },
     {
-        name: 'Deutsch',
-        code: 'de',
+        name: "Deutsch",
+        code: "de",
     },
 ];
 

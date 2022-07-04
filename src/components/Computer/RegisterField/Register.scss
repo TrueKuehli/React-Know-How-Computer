@@ -4,20 +4,20 @@
     display: grid;
     grid-template-columns: var(--line_number_min_width) 1rem auto auto auto auto;
     align-items: center;
+    height: 2.5rem;
+    margin-bottom: 0.5rem;
     padding: 0.5rem;
     border-radius: 0.5rem;
-    background-color: #fff;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-    margin-bottom: 0.5rem;
+    background-color: #fff;
     cursor: pointer;
-    height: 2.5rem;
 
     .Index {
         display: flex;
-        padding-right: 0.5ch;
-        justify-content: flex-end;
         align-items: center;
+        justify-content: flex-end;
         justify-self: flex-end;
+        padding-right: 0.5ch;
         color: #444;
     }
 

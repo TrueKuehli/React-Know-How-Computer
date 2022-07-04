@@ -1,7 +1,8 @@
-import React from 'react';
-import { Tooltip, Button } from '@mantine/core';
+import React from "react";
+import { Tooltip, Button } from "@mantine/core";
 
-import './TooltipButton.scss';
+import "./TooltipButton.scss";
+
 
 type Props = {
     command: string;
@@ -10,6 +11,7 @@ type Props = {
     size?: "sm" | "md" | "lg" | "xl";
     onClick?: () => void;
 }
+
 
 function TooltipButton(props: Props) {
     return (

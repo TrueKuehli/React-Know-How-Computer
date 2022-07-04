@@ -1,9 +1,9 @@
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
 
-import en_US from './en_US';
-import de_DE from './de_DE';
+import en_US from "./en_US";
+import de_DE from "./de_DE";
 
 i18n
     .use(LanguageDetector)
@@ -19,8 +19,8 @@ i18n
             de: {translation: de_DE},
         },
     }).then((t) => {
-        if (!window.localStorage.getItem('i18nextLng')) {
-            window.localStorage.setItem('i18nextLng', i18n.language);
+        if (!window.localStorage.getItem("i18nextLng")) {
+            window.localStorage.setItem("i18nextLng", i18n.language);
         }
 
         document.head.title = t("<head>.title");

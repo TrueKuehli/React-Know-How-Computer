@@ -1,5 +1,5 @@
-import React, {useRef} from 'react';
-import {NumberInput} from '@mantine/core';
+import React, {useRef} from "react";
+import {NumberInput} from "@mantine/core";
 
 
 type Props = {
@@ -14,8 +14,9 @@ type Props = {
     disabled?: boolean;
 }
 
-function NonEmptyNumInput(props: Props) {
-    const ref = useRef<HTMLInputElement>(null);
+const NonEmptyNumInput = React.forwardRef((props: Props, ref) => {
+    const _ref = useRef<HTMLInputElement>(null);
+
     return (
         <NumberInput
             className={props.className}
@@ -28,8 +29,9 @@ function NonEmptyNumInput(props: Props) {
 
                     // Need to give the browser some time before changing the value again.
                     setTimeout(() => {
-                        if (ref.current) {
-                            ref.current.value = "0";
+                        if ((ref as React.MutableRefObject<HTMLInputElement> || _ref).current !== null) {
+                            // @ts-ignore Does not detect that the value of current is checked above
+                            (ref as React.MutableRefObject<HTMLInputElement> || _ref).current.value = "0";
                         }
                     })
                 } else {
@@ -43,10 +45,10 @@ function NonEmptyNumInput(props: Props) {
             min={props.min}
             step={1}
             styles={{ input: { width: props.width } }}
-            ref={ref}
+            ref={ref as React.MutableRefObject<HTMLInputElement> || _ref}
             disabled={props.disabled}
         />
     );
-}
+});
 
 export default NonEmptyNumInput;

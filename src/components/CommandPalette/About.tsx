@@ -1,10 +1,10 @@
 import React, {useState} from "react";
 import {Modal, Text} from "@mantine/core";
-import {useTranslation, Trans} from 'react-i18next';
-import InfoIcon from '@mui/icons-material/Info';
+import {useTranslation, Trans} from "react-i18next";
+import InfoIcon from "@mui/icons-material/Info";
 
-import TooltipIconButton from "./TooltipIconButton";
-import './About.scss';
+import TooltipIconButton from "../generic/TooltipIconButton";
+import "./About.scss";
 
 
 type Props = {
@@ -23,7 +23,7 @@ function About(props: Props) {
                 title={t("About.Title")}
                 styles={{
                     title: {
-                        fontSize: '1.5rem',
+                        fontSize: "1.5rem",
                     }
                 }}
             >

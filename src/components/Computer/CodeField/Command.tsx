@@ -1,13 +1,17 @@
-import React, {useRef, memo} from 'react';
+import React, {useRef, memo} from "react";
 import {useTranslation} from "react-i18next";
 import {Divider, TextInput, Tooltip, useMantineTheme} from "@mantine/core";
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import ClearIcon from '@mui/icons-material/Clear';
-import DragHandleIcon from '@mui/icons-material/DragHandle';
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ClearIcon from "@mui/icons-material/Clear";
+import DragHandleIcon from "@mui/icons-material/DragHandle";
 
-import NonEmptyNumInput from "./NonEmptyNumInput";
-import TooltipIconButton from "./TooltipIconButton";
-import './Command.scss';
+import {useAppDispatch} from "../../../state/stateHooks";
+import {setSelectedCommand} from "../../../state/computerUISlice";
+import {removeCommand, setCommandReference, setCommandType} from "../../../state/computerSlice";
+
+import NonEmptyNumInput from "../../generic/NonEmptyNumInput";
+import TooltipIconButton from "../../generic/TooltipIconButton";
+import "./Command.scss";
 
 enum CommandType {
     NOP = "NOP",
@@ -39,18 +43,18 @@ type Props = {
     command: CommandStruct;
     selected: boolean;
     current: boolean;
-    updateCommand: (index: number, command: CommandType, register: number) => void;
-    removeCommand: (index: number) => void;
-    onClick: (index: number) => void;
 }
 
 function Command(props: Props) {
-    const ref = useRef<HTMLInputElement>(null);
+    const dispatch = useAppDispatch();
+
+    const commandInputRef = useRef<HTMLInputElement>(null);
+    const referenceInputRef = useRef<HTMLInputElement>(null);
     const theme = useMantineTheme();
     const {t} = useTranslation();
 
     return (
-        <div className="Command" onClick={() => props.onClick(props.line)}
+        <div className="Command" onClick={() => dispatch(setSelectedCommand(props.line))}
              style={{...(props.selected ? {backgroundColor: theme.colors[theme.primaryColor][2]} : {}),
                      ["--line_number_min_width" as any]: `${props.lineDigits + 2.5}ch`}}>
             <DragHandleIcon className={"DragHandle"} fontSize={"medium"}/>
@@ -62,26 +66,38 @@ function Command(props: Props) {
                 <TextInput className="CommandInput"
                            aria-label={t("Command.Command.AriaLabel")}
                            value={props.command.type}
-                           ref={ref}
+                           ref={commandInputRef}
                            onInput={(evt) => {
                                 switch ((evt.nativeEvent as InputEvent).data?.toLowerCase()) {
                                     case "n":
-                                        props.updateCommand(props.line, CommandType.NOP, props.command.reference);
+                                        dispatch(setCommandType({"id": props.command.id, "commandType": CommandType.NOP}));
                                         break;
                                     case "+":
-                                        props.updateCommand(props.line, CommandType.INCREMENT, props.command.reference);
+                                        setTimeout(() => {
+                                            referenceInputRef.current?.select();
+                                        }, 0);
+                                        dispatch(setCommandType({"id": props.command.id, "commandType": CommandType.INCREMENT}));
                                         break;
                                     case "-":
-                                        props.updateCommand(props.line, CommandType.DECREMENT, props.command.reference);
+                                        setTimeout(() => {
+                                            referenceInputRef.current?.select();
+                                        }, 0);
+                                        dispatch(setCommandType({"id": props.command.id, "commandType": CommandType.DECREMENT}));
                                         break;
                                     case "j":
-                                        props.updateCommand(props.line, CommandType.JUMP, props.command.reference);
+                                        setTimeout(() => {
+                                            referenceInputRef.current?.select();
+                                        }, 0);
+                                        dispatch(setCommandType({"id": props.command.id, "commandType": CommandType.JUMP}));
                                         break;
                                     case "0":
-                                        props.updateCommand(props.line, CommandType.IF_ZERO, props.command.reference);
+                                        setTimeout(() => {
+                                            referenceInputRef.current?.select();
+                                        }, 0);
+                                        dispatch(setCommandType({"id": props.command.id, "commandType": CommandType.IF_ZERO}));
                                         break;
                                     case "s":
-                                        props.updateCommand(props.line, CommandType.STOP, props.command.reference);
+                                        dispatch(setCommandType({"id": props.command.id, "commandType": CommandType.STOP}));
                                         break;
                                 }
                            }}/>
@@ -93,7 +109,9 @@ function Command(props: Props) {
                                   min={0}
                                   max={props.maxVal - 1}
                                   width={`${6 + props.valDigits}ch`}
-                                  update={(register: number) => props.updateCommand(props.line, props.command.type, register)}
+                                  ref={referenceInputRef}
+                                  update={(register: number) => dispatch(setCommandReference(
+                                      {id: props.command.id, ref: register}))}
                                   disabled={ARGUMENTLESS_COMMANDS.includes(props.command.type)}/>
             </Tooltip>
 
@@ -103,7 +121,7 @@ function Command(props: Props) {
                                color={"pink"}
                                size={"lg"}
                                position={"right"}
-                               onClick={() => props.removeCommand(props.command.id)}>
+                               onClick={() => dispatch(removeCommand(props.command.id))}>
                 <ClearIcon fontSize={"medium"}/>
             </TooltipIconButton>
         </div>
