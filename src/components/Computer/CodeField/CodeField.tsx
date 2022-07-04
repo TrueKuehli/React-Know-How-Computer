@@ -21,6 +21,7 @@ function CodeField() {
 
     const {t} = useTranslation();
 
+    const itemAddRef = React.useRef<HTMLDivElement>(null);
 
     return (
         <div className="CodeField">
@@ -48,7 +49,10 @@ function CodeField() {
                     })
                 }
             </ReactSortable>
-            <div className="ItemAdd" onClick={() => dispatch(addCommand())}>
+            <div className="ItemAdd" ref={itemAddRef}  onClick={() => {
+                dispatch(addCommand());
+                setTimeout(() => itemAddRef.current?.scrollIntoView({behavior: "smooth"}), 0);
+            }}>
                 <ActionIcon size={"xl"} className={"CommandAddIcon"} variant={"transparent"}
                             aria-label={t("CommandBox.AddCommand.AriaLabel")}>
                     <AddCircleIcon fontSize="large" />

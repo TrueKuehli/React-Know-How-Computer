@@ -17,6 +17,8 @@ function RegisterField() {
 
     const {t} = useTranslation();
 
+    const itemAddRef = React.useRef<HTMLDivElement>(null);
+
     return (
         <div className="RegisterField">
             <Text size="xl" className="RegistersHeader" color="white" weight="bold">
@@ -33,7 +35,10 @@ function RegisterField() {
                     );
                 })
             }
-            <div className="ItemAdd" onClick={() => dispatch(addRegister())}>
+            <div className="ItemAdd" ref={itemAddRef} onClick={() => {
+                dispatch(addRegister());
+                setTimeout(() => itemAddRef.current?.scrollIntoView({behavior: "smooth"}), 0);
+            }}>
                 <ActionIcon size={"xl"} className={"CommandAddIcon"} variant={"transparent"}
                             aria-label={t("RegisterBox.AddRegister.AriaLabel")}>
                     <AddCircleIcon fontSize="large" />
